@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e3cd6e99-f163-45e5-b96b-8e752488120a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/NFT/text.txt" afterDir="false" />
+    <list default="true" id="e17b261a-12c5-4819-8604-90b159a26d4a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NFT/API/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NFT/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NFT/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,14 +27,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\pythonRepos\Djangobackend" />
@@ -41,7 +44,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="e3cd6e99-f163-45e5-b96b-8e752488120a" name="Changes" comment="" />
+      <changelist id="e17b261a-12c5-4819-8604-90b159a26d4a" name="Changes" comment="" />
       <created>1667485677131</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />

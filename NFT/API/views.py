@@ -36,3 +36,15 @@ def get_person_by_address(request, address):
         return HttpResponse(dumps(person, cls=PersonEncoder))
     except:
         return HttpResponse("Такого пользователя не существует")
+
+
+def main_page(request):
+    return HttpResponse("<h4>Основная страница. Ничего лишнего<h4>"
+                        "<p4>Я сразу смазал карту будня,<p4>"
+                        "<p>плеснувши краску из стакана;<p>"
+                        "<p>я показал на блюде студня<p> "
+                        "<p>косые скулы океана.<p> "
+                        "<p>На чешуе жестяной рыбы<p>"
+                        "<p> прочёл я зовы новых губ.<p>"
+                        "<p>А вы ноктюрн сыграть могли бы"
+                        "<p> на флейте водосточных труб?<p>")
