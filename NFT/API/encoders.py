@@ -23,3 +23,14 @@ class History(json.JSONEncoder):
                 "UserAddressTo": obj.UserAddressTo,
                 "TransferNFTHash": obj.TransferNFTHash}
 
+
+class AllPerson(json.JSONEncoder):
+    def default(self, obj):
+        result = dict()
+        for person in obj:
+            result[person.id] = {"Id": person.id,
+                                 "UserAddress": person.UserAddress,
+                                 "Login": person.Login,
+                                 "Password": person.Password}
+        return result
+
