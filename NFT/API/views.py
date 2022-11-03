@@ -27,7 +27,7 @@ def get_person_all(request):
     try:
         persons = Person.objects.all()
         return HttpResponse(dumps(persons, cls=AllPerson))
-    except :
+    except:
         return HttpResponse("Пользователей не найдено")
 
 
@@ -61,5 +61,19 @@ def update_person_data(request, address):
             person.Password = body['Password']
             person.save()
             return HttpResponse("Данные успешно изменены")
-    except :
+    except:
         return HttpResponse("Не удалось изменить данные или пользователь не существует")
+
+
+def post_console(request):
+    import requests
+    url = "http://127.0.0.1:8000/create/"
+    data = {"Login": input("Enter your login: "),
+            "Password": input("Enter your password: "),
+            "Address": input("Enter your address: ")}
+    res = requests.post(url, json=data)
+    if res.status_code == 200:
+        print("It's working")
+    else:
+        print("It isn't working")
+    return HttpResponse(f"<h4>Пользователь добавлен {data}<h4>")

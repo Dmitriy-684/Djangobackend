@@ -25,4 +25,5 @@ urlpatterns = [
     path('get/', views.get_person_all),
     path('', views.main_page),
     path('update/<str:address>', views.update_person_data),
+    path("add-person/", views.post_console)
 ]
