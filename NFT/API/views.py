@@ -13,7 +13,7 @@ def create_person(request):
             person.Password = request.POST.get("Password")
             person.save()
             return HttpResponse("Пользователь успешно добавлен")
-    except :
+    except:
         return HttpResponse("Не удалось добавить пользователя")
 
 
