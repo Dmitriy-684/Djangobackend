@@ -21,7 +21,7 @@ from API import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('create/', views.create_person),
-    path('get/<int:id>', views.get_person_by_id),
     path('get/<str:address>', views.get_person_by_address),
     path('get/', views.get_person_all),
+    path('update/<str:address>', views.update_person_data),
 ]
