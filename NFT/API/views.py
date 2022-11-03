@@ -4,17 +4,23 @@ from json import dumps
 from .encoders import PersonEncoder
 
 
-def create_person(request, address, login, password):
+def create_person(request):
     try:
-        person = Person()
-        person.Login = login
-        person.UserAddress = address
-        person.Password = password
-        person.save()
-        return HttpResponse("Пользователь успешно добавлен")
+        if request.method == "POST":
+            person = Person()
+            person.Login = request.POST.get("Login")
+            person.UserAddress = request.POST.get("Address")
+            person.Password = request.POST.get("Password")
+            person.save()
+            return HttpResponse("Пользователь успешно добавлен")
     except :
         return HttpResponse("Не удалось добавить пользователя")
 
+
+def get_person_all(request):
+    persons = Person.objects.all()
+    for person in persons:
+        print(person.id)
 
 def get_person_by_id(request, id):
     try:

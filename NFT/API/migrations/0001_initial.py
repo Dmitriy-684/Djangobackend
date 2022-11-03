@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='NFTs',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('NFTHash', models.CharField(max_length=46, verbose_name='Хэш код NFT')),
+                ('NFTHash', models.CharField(max_length=46, verbose_name='Хэш код API')),
             ],
         ),
         migrations.CreateModel(
@@ -31,9 +31,9 @@ class Migration(migrations.Migration):
             name='History',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('TransferNFTHash', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='NFT.nfts', verbose_name='Продаваемая NFT')),
-                ('UserAddressFrom', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='UserFrom', to='NFT.person', verbose_name='Продавец')),
-                ('UserAddressTo', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='UserTo', to='NFT.person', verbose_name='Покупатель')),
+                ('TransferNFTHash', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='API.nfts', verbose_name='Продаваемая API')),
+                ('UserAddressFrom', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='UserFrom', to='API.person', verbose_name='Продавец')),
+                ('UserAddressTo', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='UserTo', to='API.person', verbose_name='Покупатель')),
             ],
         ),
     ]
