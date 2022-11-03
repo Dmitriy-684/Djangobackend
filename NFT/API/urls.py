@@ -1,4 +1,4 @@
-"""NFT URL Configuration
+"""API URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+# noinspection PyUnresolvedReferences
+from API import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('create/', views.create_person),
+    path('get/<int:id>', views.get_person_by_id),
+    path('get/<str:address>', views.get_person_by_address),
+    path('get/', views.get_person_all),
 ]
