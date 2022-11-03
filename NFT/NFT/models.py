@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Person(models.Model):
-    UserAddress = models.CharField(max_length=42, primary_key=True, verbose_name="Адрес кошелька пользователя")
+    UserAddress = models.CharField(max_length=42, unique=True, verbose_name="Адрес кошелька пользователя")
     Login = models.TextField(verbose_name="Логин пользователя")
     Password = models.TextField(verbose_name="Пароль пользователя")
 
@@ -15,6 +15,7 @@ class NFTs(models.Model):
 
     def __str__(self):
         return self.NFTHash
+
 
 class History(models.Model):
     UserAddressFrom = models.ForeignKey(Person, on_delete=models.DO_NOTHING, related_name="UserFrom", verbose_name="Продавец")
