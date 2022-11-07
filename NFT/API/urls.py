@@ -1,8 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path
-# noinspection PyUnresolvedReferences
-from API import views
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -10,5 +9,6 @@ urlpatterns = [
     path('get/<str:address>', views.get_person_by_address),
     path('get/', views.get_person_all),
     path('', views.main_page),
+    path('add-user', views.post_data),
     path('update/<str:address>', views.update_person_data),
 ]

@@ -4,10 +4,12 @@ from .models import Person
 
 class PersonEncoder(json.JSONEncoder):
     def default(self, obj):
+
         return {"Id": obj.id,
                 "UserAddress": obj.UserAddress,
                 "Login": obj.Login,
-                "Password": obj.Password}
+                "Password": obj.Password,
+                "Email": obj.Email}
 
 
 class NFTEncoder(json.JSONEncoder):
@@ -31,6 +33,7 @@ class AllPerson(json.JSONEncoder):
             result[person.id] = {"Id": person.id,
                                  "UserAddress": person.UserAddress,
                                  "Login": person.Login,
-                                 "Password": person.Password}
+                                 "Password": person.Password,
+                                 "Email": person.Email}
         return result
 
