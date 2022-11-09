@@ -7,6 +7,7 @@ from json import dumps
 from .encoders import PersonEncoder, AllPerson
 from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
+from django.db.utils import IntegrityError
 
 
 @csrf_exempt
@@ -16,55 +17,42 @@ def create_person(request):
         body = request.body.decode('utf-8')
         body = json.loads(body)
         valid = validate(body["Email"], body["Password"])
-        if not valid[0]["Valid"]: return HttpResponse("<h4>" + valid[0]["Message"] + "<h4>")
-        if not valid[1]["Valid"]: return HttpResponse("<h4>" + valid[0]["Message"] + "<h4>")
         person.UserAddress = body['Address']
         person.Password = hashlib.sha256(bytes(body['Password'], "UTF-8")).hexdigest()
         person.Email = body['Email']
-        person.save()
+        if not valid[0]["Valid"]:
+            print(valid[0]["Message"])
+            message = valid[0]["Message"]; return HttpResponse(f"<h4>{message}<h4>")
+        if not valid[1]["Valid"]:
+            print(valid[1]["Message"])
+            message = valid[1]["Message"]; return HttpResponse(f"<h4>{message}<h4>")
+        try:
+            person.save()
+        except IntegrityError:
+            print("Пользователь с таким Email уже существует")
+            return HttpResponse("<h4>Пользователь с таким Email уже существует<h4>")
+        print("Пользователь успешно добавлен")
         return HttpResponse("<h4>Пользователь успешно добавлен<h4>")
     elif request.method == "GET":
         return HttpResponse("<h4>Где данные?!<h4>")
 
 
-def post_data(request):
-    url = "http://127.0.0.1:8000/create/"
-    data = {"Password": input("Enter your password: "),
-            "Address": input("Enter your address: "),
-            "Email": input("Enter your email: ")}
-    res = requests.post(url, json=data)
-    if res.status_code == 200:
-        return HttpResponse(f"<h4>Данные успешно отправлены {data}<h4>")
-    else:
-        return HttpResponse(f"<h4>Данные не отправлены! {data}<h4>")
+@csrf_exempt
+def user_authorization(request):
+    if request.method == "POST":
+        body = request.body.decode('utf-8')
+        body = json.loads(body)
+        User = Person.objects.get(UserAddress=body["Address"])
+        if (User.Email == body["Email"]) and (User.Password == hashlib.sha256(bytes(body["Password"], "UTF-8")).hexdigest()):
+            print("Пользователь авторизован")
+            return HttpResponse("<h4>Пользователь авторизован<h4>")
+        else:
+            print("Неверный email или пароль")
+            return HttpResponse("<h4>Неверный email или пароль<h4>")
+    elif request.method == "GET":
+        return HttpResponse("<h4>Где данные?!<h4>")
 
 
-def get_person_all(request):
-    try:
-        persons = Person.objects.all()
-        return HttpResponse(dumps(persons, cls=AllPerson))
-    except:
-        return HttpResponse("Пользователей не найдено")
-
-
-def get_person_by_address(request, address):
-    try:
-        person = Person.objects.get(UserAddress=address)
-        return HttpResponse(dumps(person, cls=PersonEncoder))
-    except:
-        return HttpResponse("Такого пользователя не существует")
-
-
-def main_page(request):
-    return HttpResponse("<h4>Основная страница. Ничего лишнего<h4>"
-                        "<p4>Я сразу смазал карту будня,<p4>"
-                        "<p>плеснувши краску из стакана;<p>"
-                        "<p>я показал на блюде студня<p> "
-                        "<p>косые скулы океана.<p> "
-                        "<p>На чешуе жестяной рыбы<p>"
-                        "<p> прочёл я зовы новых губ.<p>"
-                        "<p>А вы ноктюрн сыграть могли бы"
-                        "<p> на флейте водосточных труб?<p>")
 @csrf_exempt
 def update_person_data(request, address):
     try:
@@ -79,5 +67,60 @@ def update_person_data(request, address):
             return HttpResponse("Данные успешно изменены")
     except:
         return HttpResponse("Не удалось изменить данные или пользователь не существует")
+
+
+def post_for_registration(request):
+    url = "http://127.0.0.1:8000/register/"
+    data = {"Address": input("Enter your address: "),
+            "Email": input("Enter your email: "),
+            "Password": input("Enter your password: "),
+            }
+    res = requests.post(url, json=data)
+    if res.status_code == 200:
+        return HttpResponse(f"<h4>Данные успешно отправлены {data}<h4>")
+    else:
+        return HttpResponse(f"<h4>Данные не отправлены! {data}<h4>")
+
+
+def post_for_authorization(request):
+    url = "http://127.0.0.1:8000/login/"
+    data = {"Address": input("Enter your address: "),
+            "Email": input("Enter your email: "),
+            "Password": input("Enter your password: "),
+            }
+    res = requests.post(url, json=data)
+    if res.status_code == 200:
+        return HttpResponse(f"<h4>Данные успешно отправлены {data}<h4>")
+    else:
+        return HttpResponse(f"<h4>Данные не отправлены! {data}<h4>")
+
+
+def get_person_all(request):
+    persons = Person.objects.all()
+    persons = dumps(persons, cls=AllPerson)
+    if persons:
+        return HttpResponse(persons)
+    else:
+        return HttpResponse("<h4>Пользователей не найдено<h4>")
+
+
+def get_person_by_address(request, address):
+    try:
+        person = Person.objects.get(UserAddress=address)
+        return HttpResponse(dumps(person, cls=PersonEncoder))
+    except:
+        return HttpResponse("<h4>Такого пользователя не существует<h4>")
+
+
+def main_page(request):
+    return HttpResponse("<h4>Основная страница. Ничего лишнего<h4>"
+                        "<p4>Я сразу смазал карту будня,<p4>"
+                        "<p>плеснувши краску из стакана;<p>"
+                        "<p>я показал на блюде студня<p> "
+                        "<p>косые скулы океана.<p> "
+                        "<p>На чешуе жестяной рыбы<p>"
+                        "<p> прочёл я зовы новых губ.<p>"
+                        "<p>А вы ноктюрн сыграть могли бы"
+                        "<p> на флейте водосточных труб?<p>")
 
 
