@@ -11,21 +11,20 @@ from .validations import validate
 
 @csrf_exempt
 def create_person(request):
-    try:
-        if request.method == "POST":
-            person = Person()
-            body = request.body.decode('utf-8')
-            body = json.loads(body)
-            valid = validate(body["Email"], body["Password"])
-            if not valid[0]: return HttpResponse("Неверный формат email адреса")
-            if not valid[1]: return HttpResponse("Ваш пароль небезопасный")
-            person.UserAddress = body['Address']
-            person.Password = hashlib.sha256(bytes(body['Password'], "UTF-8")).hexdigest()
-            person.Email = body['Email']
-            person.save()
-            return HttpResponse("Пользователь успешно добавлен")
-    except:
-        return HttpResponse("Не удалось добавить пользователя")
+    if request.method == "POST":
+        person = Person()
+        body = request.body.decode('utf-8')
+        body = json.loads(body)
+        valid = validate(body["Email"], body["Password"])
+        if not valid[0]["Valid"]: return HttpResponse("<h4>" + valid[0]["Message"] + "<h4>")
+        if not valid[1]["Valid"]: return HttpResponse("<h4>" + valid[0]["Message"] + "<h4>")
+        person.UserAddress = body['Address']
+        person.Password = hashlib.sha256(bytes(body['Password'], "UTF-8")).hexdigest()
+        person.Email = body['Email']
+        person.save()
+        return HttpResponse("<h4>Пользователь успешно добавлен<h4>")
+    elif request.method == "GET":
+        return HttpResponse("<h4>Где данные?!<h4>")
 
 
 def post_data(request):
