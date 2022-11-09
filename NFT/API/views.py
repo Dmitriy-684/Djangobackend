@@ -1,11 +1,13 @@
 import json
-
+import requests
+import hashlib
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
 from .models import Person, NFTs, History
 from json import dumps
 from .encoders import PersonEncoder, AllPerson
 from django.views.decorators.csrf import csrf_exempt
-import hashlib
+from .validations import validate
+
 
 @csrf_exempt
 def create_person(request):
@@ -14,9 +16,10 @@ def create_person(request):
             person = Person()
             body = request.body.decode('utf-8')
             body = json.loads(body)
-            person.Login = body['Login']
+            valid = validate(body["Email"], body["Password"])
+            if not valid[0]: return HttpResponse("Неверный формат email адреса")
+            if not valid[1]: return HttpResponse("Ваш пароль небезопасный")
             person.UserAddress = body['Address']
-            print(hashlib.sha256(bytes(body['Password'], "UTF-8")).hexdigest())
             person.Password = hashlib.sha256(bytes(body['Password'], "UTF-8")).hexdigest()
             person.Email = body['Email']
             person.save()
@@ -24,19 +27,17 @@ def create_person(request):
     except:
         return HttpResponse("Не удалось добавить пользователя")
 
+
 def post_data(request):
-    import requests
     url = "http://127.0.0.1:8000/create/"
-    data = {"Login": input("Enter your login: "),
-            "Password": input("Enter your password: "),
+    data = {"Password": input("Enter your password: "),
             "Address": input("Enter your address: "),
             "Email": input("Enter your email: ")}
     res = requests.post(url, json=data)
     if res.status_code == 200:
-        print("It's working")
+        return HttpResponse(f"<h4>Данные успешно отправлены {data}<h4>")
     else:
-        print("It isn't working")
-    return HttpResponse(f"<h4>Пользователь добавлен {data}<h4>")
+        return HttpResponse(f"<h4>Данные не отправлены! {data}<h4>")
 
 
 def get_person_all(request):
@@ -72,7 +73,6 @@ def update_person_data(request, address):
             person = Person.objects.get(UserAddress=address)
             body = request.body.decode('utf-8')
             body = json.loads(body)
-            person.Login = body['Login']
             person.UserAddress = body['Address']
             person.Password = body['Password']
             person.Email = body['Email']
