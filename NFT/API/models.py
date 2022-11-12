@@ -9,6 +9,7 @@ class Person(models.Model):
 
 class NFTs(models.Model):
     NFTHash = models.CharField(max_length=46, verbose_name="Хэш код HFT")
+    NFTOwner = models.ForeignKey(Person, on_delete=models.DO_NOTHING, related_name="Owner", verbose_name="Владелец")
 
 
 class History(models.Model):

@@ -8,6 +8,34 @@ from .encoders import PersonEncoder, AllPerson
 from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
 from django.db.utils import IntegrityError
+from .ipfs import ipfs_api
+
+
+@csrf_exempt
+def load_image(request):
+    if request.method == "POST":
+        body = request.body.decode('utf-8')
+        body = json.loads(body)
+        file = open("test.txt", "w")
+        ipfs_hash = ipfs_api((body["Bytes"],))
+        if ipfs_hash == "None":
+            print("Не удалось загрузить картинку")
+            return HttpResponse("<h4>Не удалось загрузить картинку<h4>")
+        else:
+            print("Хэш получен {ipfs_hash}")
+            return HttpResponse(f"<h4>Хэш получен {ipfs_hash}<h4>")
+    elif request.method == "GET":
+        return HttpResponse("<h4>Где данные!?<h4>")
+
+
+#def post_image(request):
+    url = "http://127.0.0.1:8000/load-image/"
+    #res = requests.post(url, json={"Bytes": "Some bytes here"})
+    #if res.status_code == 200:
+        #return HttpResponse("<h4>Данные отправлены<h4>")
+    #else:
+        #return HttpResponse(f"<h4>Данные не отправлены! {res.status_code}<h4>")
+
 
 
 @csrf_exempt
@@ -79,7 +107,7 @@ def post_for_registration(request):
     if res.status_code == 200:
         return HttpResponse(f"<h4>Данные успешно отправлены {data}<h4>")
     else:
-        return HttpResponse(f"<h4>Данные не отправлены! {data}<h4>")
+        return HttpResponse(f"<h4>Данные не отправлены! {res.status_code}<h4>")
 
 
 def post_for_authorization(request):
@@ -92,7 +120,7 @@ def post_for_authorization(request):
     if res.status_code == 200:
         return HttpResponse(f"<h4>Данные успешно отправлены {data}<h4>")
     else:
-        return HttpResponse(f"<h4>Данные не отправлены! {data}<h4>")
+        return HttpResponse(f"<h4>Данные не отправлены! {res.status_code}<h4>")
 
 
 def get_person_all(request):
