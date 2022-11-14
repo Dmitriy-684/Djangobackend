@@ -16,8 +16,7 @@ def load_image(request):
     if request.method == "POST":
         body = request.body.decode('utf-8')
         body = json.loads(body)
-        file = open("test.txt", "w")
-        ipfs_hash = ipfs_api((body["Bytes"],))
+        ipfs_hash = ipfs_api(body["Bytes"])
         if ipfs_hash == "None":
             print("Не удалось загрузить картинку")
             return HttpResponse("<h4>Не удалось загрузить картинку<h4>")
