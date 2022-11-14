@@ -9,7 +9,7 @@ urlpatterns = [
     path('register/', views.create_person),
     path("login/", views.user_authorization),
     path("load-image/", views.load_image),
-    #path("post-image/", views.post_image),
+    path("post-image/", views.post_image),
     path('reg-user', views.post_for_registration),
     path('auth-user', views.post_for_authorization),
     path('get/<str:address>', views.get_person_by_address),

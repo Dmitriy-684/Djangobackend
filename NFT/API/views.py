@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
 from django.db.utils import IntegrityError
 from .ipfs import ipfs_api
+import base64
 
 
 @csrf_exempt
@@ -21,19 +22,23 @@ def load_image(request):
             print("Не удалось загрузить картинку")
             return HttpResponse("<h4>Не удалось загрузить картинку<h4>")
         else:
-            print("Хэш получен {ipfs_hash}")
+            print(f"Хэш получен {ipfs_hash}")
             return HttpResponse(f"<h4>Хэш получен {ipfs_hash}<h4>")
     elif request.method == "GET":
         return HttpResponse("<h4>Где данные!?<h4>")
 
 
-#def post_image(request):
+def post_image(request):
     url = "http://127.0.0.1:8000/load-image/"
-    #res = requests.post(url, json={"Bytes": "Some bytes here"})
-    #if res.status_code == 200:
-        #return HttpResponse("<h4>Данные отправлены<h4>")
-    #else:
-        #return HttpResponse(f"<h4>Данные не отправлены! {res.status_code}<h4>")
+    file = open("API/files/forest.jpg", "rb")
+    file = file.read()
+    print(base64.b64encode(file)[:40])
+    res = requests.post(url, json={"Bytes": f"{base64.b64encode(file)}"})
+
+    if res.status_code == 200:
+        return HttpResponse("<h4>Данные отправлены<h4>")
+    else:
+        return HttpResponse(f"<h4>Данные не отправлены! {res.status_code}<h4>")
 
 
 
