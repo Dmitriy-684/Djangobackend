@@ -35,10 +35,10 @@ def get_image(request):
 
 def post_image(request):
     url = "http://127.0.0.1:8000/load-image/"
-    file = open("API/files/dmitriy.jpg", "rb")
+    file = open("API/files/test.txt", "rb")
     file = file.read()
     print(base64.b64encode(file)[:40])
-    res = requests.post(url, json={"Bytes": f"{base64.b64encode(file)}"})
+    res = requests.post(url, json={"Bytes": f"{str(base64.b64encode(file))[2:-1]}"})
 
     if res.status_code == 200:
         return HttpResponse("<h4>Данные отправлены<h4>")
