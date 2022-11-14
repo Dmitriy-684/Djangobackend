@@ -8,7 +8,7 @@ from .encoders import PersonEncoder, AllPerson
 from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
 from django.db.utils import IntegrityError
-from .ipfs import ipfs_api
+from .ipfs import ipfs_api, ipfs_api_get
 import base64
 
 
@@ -28,9 +28,14 @@ def load_image(request):
         return HttpResponse("<h4>Где данные!?<h4>")
 
 
+def get_image(request):
+    byte = ipfs_api_get("QmRcrEDBDeBaq2mqU3at6o4qn9avimspWawewtmmxNYABD")
+    return HttpResponse("{Bytes : " + str(byte)[2:-1] + "}")
+
+
 def post_image(request):
     url = "http://127.0.0.1:8000/load-image/"
-    file = open("API/files/forest.jpg", "rb")
+    file = open("API/files/dmitriy.jpg", "rb")
     file = file.read()
     print(base64.b64encode(file)[:40])
     res = requests.post(url, json={"Bytes": f"{base64.b64encode(file)}"})
