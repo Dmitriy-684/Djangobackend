@@ -37,11 +37,10 @@ def post_image(request):
     url = "http://127.0.0.1:8000/load-image/"
     file = open("API/files/test.txt", "rb")
     file = file.read()
-    print(base64.b64encode(file)[:40])
     res = requests.post(url, json={"Bytes": f"{str(base64.b64encode(file))[2:-1]}"})
 
     if res.status_code == 200:
-        return HttpResponse("<h4>Данные отправлены<h4>")
+        return HttpResponse(f"<h4>Данные отправлены {str(base64.b64encode(file))[2:-1]}<h4>")
     else:
         return HttpResponse(f"<h4>Данные не отправлены! {res.status_code}<h4>")
 
@@ -57,12 +56,10 @@ def create_person(request):
         person.UserAddress = body['Address']
         person.Password = hashlib.sha256(bytes(body['Password'], "UTF-8")).hexdigest()
         person.Email = body['Email']
-        if not valid[0]["Valid"]:
-            print(valid[0]["Message"])
-            message = valid[0]["Message"]; return HttpResponse(f"<h4>{message}<h4>")
-        if not valid[1]["Valid"]:
-            print(valid[1]["Message"])
-            message = valid[1]["Message"]; return HttpResponse(f"<h4>{message}<h4>")
+        if not valid[0][0]:
+            return HttpResponse(status=500, reason=valid[0][1])
+        if not valid[1][0]:
+            return HttpResponse(status=500, reason=valid[1][1])
         try:
             person.save()
         except IntegrityError:

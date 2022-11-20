@@ -24,7 +24,7 @@ urlpatterns = [
     # get person by address
     path('get/<str:address>', views.get_person_by_address),
     # get all persons
-    path('get/', views.get_person_all),
+    path('get-all-persons/', views.get_person_all),
     # update person data
     path('update/<str:address>', views.update_person_data),
 
