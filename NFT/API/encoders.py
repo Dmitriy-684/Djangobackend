@@ -12,8 +12,9 @@ class PersonEncoder(json.JSONEncoder):
 
 class NFTEncoder(json.JSONEncoder):
     def default(self, obj):
-        return {"Id": obj.id,
-                "NFTHash": obj.NFTHash}
+        return {"NFTHash": obj.NFTHash,
+                "NFTName": obj.NFTName,
+                "NFTCost": obj.NFTCost}
 
 
 class History(json.JSONEncoder):

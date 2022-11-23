@@ -2,13 +2,13 @@ import json
 import requests
 import hashlib
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
-from .models import Person, NFTs, History
+from .models import Person, Nft, History
 from json import dumps
-from .encoders import PersonEncoder, AllPerson
+from .encoders import PersonEncoder, AllPerson, NFTEncoder
 from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
 from django.db.utils import IntegrityError
-from .ipfs import ipfs_api, ipfs_api_get
+from .ipfs import ipfs_api
 import base64
 
 
@@ -19,31 +19,22 @@ def load_image(request):
         body = json.loads(body)
         ipfs_hash = ipfs_api(body["Bytes"])
         if ipfs_hash == "None":
-            print("Не удалось загрузить картинку")
-            return HttpResponse("<h4>Не удалось загрузить картинку<h4>")
+            return HttpResponse(status=500, reason="Failed to load image")
         else:
-            print(f"Хэш получен {ipfs_hash}")
-            return HttpResponse(f"<h4>Хэш получен {ipfs_hash}<h4>")
+            return HttpResponse(f"<h4>Hash {ipfs_hash}<h4>")
     elif request.method == "GET":
-        return HttpResponse("<h4>Где данные!?<h4>")
-
-
-def get_image(request):
-    byte = ipfs_api_get("QmRcrEDBDeBaq2mqU3at6o4qn9avimspWawewtmmxNYABD")
-    return HttpResponse("{Bytes : " + str(byte)[2:-1] + "}")
+        return HttpResponse(status=500, reason="Only for post request")
 
 
 def post_image(request):
     url = "http://127.0.0.1:8000/load-image/"
-    file = open("API/files/test.txt", "rb")
+    file = open("API/files/forest.jpg", "rb")
     file = file.read()
-    res = requests.post(url, json={"Bytes": f"{str(base64.b64encode(file))[2:-1]}"})
-
+    res = requests.post(url, json={"Bytes": f"{base64.b64encode(file)}"})
     if res.status_code == 200:
-        return HttpResponse(f"<h4>Данные отправлены {str(base64.b64encode(file))[2:-1]}<h4>")
+        return HttpResponse("<h4>Данные отправлены<h4>")
     else:
         return HttpResponse(f"<h4>Данные не отправлены! {res.status_code}<h4>")
-
 
 
 @csrf_exempt
@@ -63,12 +54,10 @@ def create_person(request):
         try:
             person.save()
         except IntegrityError:
-            print("Пользователь с таким Email уже существует")
-            return HttpResponse("<h4>Пользователь с таким Email уже существует<h4>")
-        print("Пользователь успешно добавлен")
-        return HttpResponse("<h4>Пользователь успешно добавлен<h4>")
+            return HttpResponse(status=500, reason="User with this Email already exists")
+        return HttpResponse("User added successfully")
     elif request.method == "GET":
-        return HttpResponse("<h4>Где данные?!<h4>")
+        return HttpResponse(status=500, reason="Only for post request")
 
 
 @csrf_exempt
@@ -78,13 +67,11 @@ def user_authorization(request):
         body = json.loads(body)
         User = Person.objects.get(UserAddress=body["Address"])
         if (User.Email == body["Email"]) and (User.Password == hashlib.sha256(bytes(body["Password"], "UTF-8")).hexdigest()):
-            print("Пользователь авторизован")
-            return HttpResponse("<h4>Пользователь авторизован<h4>")
+            return HttpResponse("Alright!")
         else:
-            print("Неверный email или пароль")
-            return HttpResponse("<h4>Неверный email или пароль<h4>")
+            return HttpResponse(status=500, reason="Wrong Email or Password")
     elif request.method == "GET":
-        return HttpResponse("<h4>Где данные?!<h4>")
+        return HttpResponse(status=500, reason="Only for post request")
 
 
 @csrf_exempt
@@ -98,9 +85,9 @@ def update_person_data(request, address):
             person.Password = body['Password']
             person.Email = body['Email']
             person.save()
-            return HttpResponse("Данные успешно изменены")
+            return HttpResponse("Successfully")
     except:
-        return HttpResponse("Не удалось изменить данные или пользователь не существует")
+        return HttpResponse(status=500, reason="Something went wrong")
 
 
 def post_for_registration(request):
@@ -135,7 +122,7 @@ def get_person_all(request):
     if persons:
         return HttpResponse(persons)
     else:
-        return HttpResponse("<h4>Пользователей не найдено<h4>")
+        return HttpResponse(status=500, reason="Can't find users")
 
 
 def get_person_by_address(request, address):
@@ -143,7 +130,17 @@ def get_person_by_address(request, address):
         person = Person.objects.get(UserAddress=address)
         return HttpResponse(dumps(person, cls=PersonEncoder))
     except:
-        return HttpResponse("<h4>Такого пользователя не существует<h4>")
+        return HttpResponse(status=500, reason="This person doesn't exist")
+
+
+def get_nfts_by_user_address(request, address):
+    try:
+        nfts = [nft for nft in Nft.objects.all() if nft.NFTOwner.UserAddress == address]
+        data = {f"{nfts[0].NFTOwner.UserAddress}": tuple(dumps(nft, cls=NFTEncoder) for nft in nfts)}
+        return HttpResponse(f"{data}")
+    except IndexError:
+        return HttpResponse(status=500, reason="This user doesn't have any NFTs")
+
 
 
 def main_page(request):

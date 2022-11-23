@@ -15,14 +15,14 @@ urlpatterns = [
     path("load-image/", views.load_image),
     # test for load image
     path("post-image/", views.post_image),
-    # get image from ipfs
-    path("get-image/", views.get_image),
     # test for registration
     path('reg-user', views.post_for_registration),
     # test for authorize
     path('auth-user', views.post_for_authorization),
     # get person by address
-    path('get/<str:address>', views.get_person_by_address),
+    path('get-user/<str:address>', views.get_person_by_address),
+    # get all nfts by user address
+    path('get-nfts/<str:address>', views.get_nfts_by_user_address),
     # get all persons
     path('get-all-persons/', views.get_person_all),
     # update person data
