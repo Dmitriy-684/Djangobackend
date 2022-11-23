@@ -4,7 +4,7 @@ import hashlib
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
 from .models import Person, Nft, History
 from json import dumps
-from .encoders import PersonEncoder, AllPerson, NFTEncoder
+from .encoders import PersonEncoder, NFTEncoder
 from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
 from django.db.utils import IntegrityError
@@ -21,7 +21,7 @@ def load_image(request):
         if ipfs_hash == "None":
             return HttpResponse(status=500, reason="Failed to load image")
         else:
-            return HttpResponse(f"<h4>Hash {ipfs_hash}<h4>")
+            return HttpResponse(f"{ipfs_hash}")
     elif request.method == "GET":
         return HttpResponse(status=500, reason="Only for post request")
 
@@ -74,20 +74,20 @@ def user_authorization(request):
         return HttpResponse(status=500, reason="Only for post request")
 
 
-@csrf_exempt
-def update_person_data(request, address):
-    try:
-        if request.method == "POST":
-            person = Person.objects.get(UserAddress=address)
-            body = request.body.decode('utf-8')
-            body = json.loads(body)
-            person.UserAddress = body['Address']
-            person.Password = body['Password']
-            person.Email = body['Email']
-            person.save()
-            return HttpResponse("Successfully")
-    except:
-        return HttpResponse(status=500, reason="Something went wrong")
+# @csrf_exempt
+# def update_person_data(request, address):
+#     try:
+#         if request.method == "POST":
+#             person = Person.objects.get(UserAddress=address)
+#             body = request.body.decode('utf-8')
+#             body = json.loads(body)
+#             person.UserAddress = body['Address']
+#             person.Password = body['Password']
+#             person.Email = body['Email']
+#             person.save()
+#             return HttpResponse("Successfully")
+#     except:
+#         return HttpResponse(status=500, reason="Something went wrong")
 
 
 def post_for_registration(request):
@@ -118,9 +118,9 @@ def post_for_authorization(request):
 
 def get_person_all(request):
     persons = Person.objects.all()
-    persons = dumps(persons, cls=AllPerson)
-    if persons:
-        return HttpResponse(persons)
+    data = tuple(dumps(person, cls=PersonEncoder) for person in persons)
+    if data:
+        return HttpResponse(f"{data}")
     else:
         return HttpResponse(status=500, reason="Can't find users")
 
@@ -140,7 +140,6 @@ def get_nfts_by_user_address(request, address):
         return HttpResponse(f"{data}")
     except IndexError:
         return HttpResponse(status=500, reason="This user doesn't have any NFTs")
-
 
 
 def main_page(request):

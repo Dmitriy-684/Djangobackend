@@ -26,6 +26,6 @@ urlpatterns = [
     # get all persons
     path('get-all-persons/', views.get_person_all),
     # update person data
-    path('update/<str:address>', views.update_person_data),
+    # path('update/<str:address>', views.update_person_data),
 
 ]

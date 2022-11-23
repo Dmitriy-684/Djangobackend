@@ -8,9 +8,7 @@ def ipfs_api(bts: str) -> str:
         ip, port = "127.0.0.1", 5001
         api = ipfsApi.Client(ip, port)
         bts = bytes(bts, encoding='utf-8')
-        print(bts)
         response = api.add_bytes(base64.b64decode(bts))
-        print(response)
         return response
     except AttributeError:
         return "None"
