@@ -13,10 +13,15 @@ import base64
 
 
 @csrf_exempt
-def load_image(request):
+def load_image_post(request):
     if request.method == "POST":
+        """decode POST body to UTF-8"""
         body = request.body.decode('utf-8')
+
+        """parse json in body"""
         body = json.loads(body)
+
+        """send Bytes to ipfs method"""
         ipfs_hash = ipfs_api(body["Bytes"])
         if ipfs_hash == "None":
             print("Не удалось загрузить картинку")
@@ -25,15 +30,19 @@ def load_image(request):
             print(f"Хэш получен {ipfs_hash}")
             return HttpResponse(f"<h4>Хэш получен {ipfs_hash}<h4>")
     elif request.method == "GET":
-        return HttpResponse("<h4>Где данные!?<h4>")
+        return HttpResponse("Ожидается POST запрос")
 
 
-def get_image(request):
+"""test method for get file from ipfs"""
+def test_get_image(request):
     byte = ipfs_api_get("QmRcrEDBDeBaq2mqU3at6o4qn9avimspWawewtmmxNYABD")
+
+    """return byte[2:-1], because they start with b' and end ' """
     return HttpResponse("{Bytes : " + str(byte)[2:-1] + "}")
 
 
-def post_image(request):
+"""test method for load file to ipfs"""
+def test_post_image(request):
     url = "http://127.0.0.1:8000/load-image/"
     file = open("API/files/test.txt", "rb")
     file = file.read()
@@ -46,9 +55,9 @@ def post_image(request):
         return HttpResponse(f"<h4>Данные не отправлены! {res.status_code}<h4>")
 
 
-
+"""method for create person"""
 @csrf_exempt
-def create_person(request):
+def create_person_post(request):
     if request.method == "POST":
         person = Person()
         body = request.body.decode('utf-8')
@@ -75,7 +84,7 @@ def create_person(request):
 
 
 @csrf_exempt
-def user_authorization(request):
+def user_authorization_post(request):
     if request.method == "POST":
         body = request.body.decode('utf-8')
         body = json.loads(body)
@@ -106,7 +115,7 @@ def update_person_data(request, address):
         return HttpResponse("Не удалось изменить данные или пользователь не существует")
 
 
-def post_for_registration(request):
+def test_post_for_registration(request):
     url = "http://127.0.0.1:8000/register/"
     data = {"Address": input("Enter your address: "),
             "Email": input("Enter your email: "),
@@ -119,7 +128,7 @@ def post_for_registration(request):
         return HttpResponse(f"<h4>Данные не отправлены! {res.status_code}<h4>")
 
 
-def post_for_authorization(request):
+def test_post_for_authorization(request):
     url = "http://127.0.0.1:8000/login/"
     data = {"Address": input("Enter your address: "),
             "Email": input("Enter your email: "),
