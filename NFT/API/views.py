@@ -18,6 +18,7 @@ def load_image(request):
         body = request.body.decode('utf-8')
         body = json.loads(body)
         ipfs_hash = ipfs_api(body["Bytes"])
+        print(ipfs_hash)
         if ipfs_hash == "None":
             return HttpResponse(status=500, reason="Failed to load image")
         else:
