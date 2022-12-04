@@ -4,7 +4,7 @@ import hashlib
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
 from .models import Person, Nft, History
 from json import dumps
-from .encoders import PersonEncoder, NFTEncoder
+from .encoders import PersonEncoder, NFTEncoder, HistoryEncoder
 from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
 from django.db.utils import IntegrityError
@@ -154,3 +154,24 @@ def main_page(request):
                         "<p> прочёл я зовы новых губ.<p>"
                         "<p>А вы ноктюрн сыграть могли бы"
                         "<p> на флейте водосточных труб?<p>")
+
+
+"create new history entry"
+@csrf_exempt
+def new_history_entry(request):
+    if request.method == "POST":
+        body = request.body.decode("utf-8")
+        body = json.loads(body)
+        history = History()
+        history.UserAddressFrom = Person.objects.get(UserAddress=body["From"])
+        history.UserAddressTo = Person.objects.get(UserAddress=body["To"])
+        history.NFTInfo = Nft.objects.get(NFTHash=body["Hash"])
+        history.save()
+        return HttpResponse("OK")
+    else:
+        return HttpResponse(status=500, reason="expect POST request")
+
+
+def get_history_entry(request, hash):
+    history = History.objects.get(NFTInfo=Nft.objects.get(NFTHash=hash))
+    return HttpResponse(dumps(history, cls=NFTEncoder))
