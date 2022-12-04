@@ -11,22 +11,19 @@ from django.db.utils import IntegrityError
 from .ipfs import ipfs_api
 import base64
 
-
 @csrf_exempt
 def load_image(request):
     if request.method == "POST":
         body = request.body.decode('utf-8')
         body = json.loads(body)
-        ipfs_hash = ipfs_api(body["Bytes"])
-        print(ipfs_hash)
+        ipfs_hash = ipfs_api(body["Bytes"], "bytes")
+        body["Bytes"] = ipfs_hash
+        json_hash = ipfs_api(str(body), "json")
+        print(json_hash)
         if ipfs_hash == "None":
             return HttpResponse(status=500, reason="Failed to load image")
         else:
-            body["Bytes"] = ipfs_hash
-            string = str(body)
-            string = base64.b64encode(string.encode('utf-8'))
-            print(ipfs_api(str(string)))
-            return HttpResponse("OK")
+            return HttpResponse(f"{json_hash}")
     elif request.method == "GET":
         return HttpResponse(status=500, reason="Only for post request")
 

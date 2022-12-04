@@ -12,21 +12,25 @@
     <list default="true" id="e17b261a-12c5-4819-8604-90b159a26d4a" name="Changes" comment="">
 =======
     <list default="true" id="7a79fb79-0b70-4735-9fa3-4c53d8828e17" name="Changes" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/NFT/API/image.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
 >>>>>>> dmitriy
+=======
+>>>>>>> dmitriy
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFT/API/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFT/API/encoders.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/encoders.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFT/API/files/test.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/files/test.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFT/API/ipfs.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/ipfs.py" afterDir="false" />
 <<<<<<< HEAD
 =======
       <change beforePath="$PROJECT_DIR$/NFT/API/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/models.py" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/NFT/API/test.txt" beforeDir="false" />
 >>>>>>> dmitriy
 >>>>>>> 8feb58efb1a26d0f63a06a74115b51a24bbcbf0e
       <change beforePath="$PROJECT_DIR$/NFT/API/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/urls.py" afterDir="false" />
+=======
+>>>>>>> dmitriy
       <change beforePath="$PROJECT_DIR$/NFT/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFT/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/db.sqlite3" afterDir="false" />
     </list>
@@ -63,15 +67,20 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
 <<<<<<< HEAD
+<<<<<<< HEAD
     &quot;last_opened_file_path&quot;: &quot;D:/pythonRepos/Djangobackend/NFT/API/files&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
 =======
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Dmitrii/PycharmProjects/Djangobackend/NFT/API&quot;
 >>>>>>> 8feb58efb1a26d0f63a06a74115b51a24bbcbf0e
+=======
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Dmitrii/PycharmProjects/Djangobackend/NFT&quot;
+>>>>>>> dmitriy
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+<<<<<<< HEAD
 <<<<<<< HEAD
       <recent name="D:\pythonRepos\Djangobackend\NFT\API\files" />
     </key>
@@ -79,6 +88,9 @@
       <recent name="D:\pythonRepos\Djangobackend\NFT\API\files" />
 =======
 >>>>>>> 8feb58efb1a26d0f63a06a74115b51a24bbcbf0e
+=======
+      <recent name="C:\Users\Dmitrii\PycharmProjects\Djangobackend\NFT" />
+>>>>>>> dmitriy
       <recent name="C:\Users\Dmitrii\PycharmProjects\Djangobackend\NFT\API" />
     </key>
   </component>

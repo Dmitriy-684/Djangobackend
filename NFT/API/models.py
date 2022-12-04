@@ -18,3 +18,4 @@ class History(models.Model):
     UserAddressTo = models.ForeignKey(Person, on_delete=models.DO_NOTHING, related_name="UserTo", verbose_name="Покупатель")
     NFTInfo = models.ForeignKey(Nft, on_delete=models.DO_NOTHING, verbose_name="Продаваемая NFT")
 
+
