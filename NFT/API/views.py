@@ -22,7 +22,11 @@ def load_image(request):
         if ipfs_hash == "None":
             return HttpResponse(status=500, reason="Failed to load image")
         else:
-            return HttpResponse(f"{ipfs_hash}")
+            body["Bytes"] = ipfs_hash
+            string = str(body)
+            string = base64.b64encode(string.encode('utf-8'))
+            print(ipfs_api(str(string)))
+            return HttpResponse("OK")
     elif request.method == "GET":
         return HttpResponse(status=500, reason="Only for post request")
 
