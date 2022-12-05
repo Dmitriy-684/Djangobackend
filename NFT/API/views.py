@@ -37,11 +37,18 @@ def write_history(request):
         history = History()
         body = request.body.decode('utf-8')
         body = json.loads(body)
-        history.UserAddressFrom = Person.objects.get(UserAddress=body["UserAddressFrom"])
-        history.UserAddressTo = Person.objects.get(UserAddress=body["UserAddressTo"])
-        history.NFTInfo = Nft.objects.get(NFTHash=body["NFTHash"])
+        personFrom = Person.objects.get(UserAddress=body["UserAddressFrom"])
+        personTo = Person.objects.get(UserAddress=body["UserAddressTo"])
+        nft = Nft.objects.get(NFTHash=body["NFTHash"])
+        history.UserAddressFrom = personFrom
+        history.UserAddressTo = personTo
+        history.NFTInfo = nft
+        if nft.NFTOwner != personFrom:
+            return HttpResponse(status=500, reason="Invalid NftOwner")
         try:
             history.save()
+            nft.NFTOwner = personTo
+            nft.save()
             return HttpResponse("History successfully written!")
         except Exception as e:
             return HttpResponse(status=500, reason=e)
