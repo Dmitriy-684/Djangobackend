@@ -8,7 +8,7 @@ def validate(email: str, password: str) -> tuple:
                 if email.split("@")[0][-1].isalpha() or email.split("@")[0][-1].isdigit():
                     if not [s for s in email if s.lower() in "йцукенгшщзхъфывапролджэячсмитьбюё"]:
                         is_valid_email = (True, "Email is good")
-    if len(password) >= 12:
+    if len(password) >= 8:
         is_valid_password = (False, "Cyrillic characters are not allowed in the password")
         if not [s for s in password if s.lower() in "йцукенгшщзхъфывапролджэячсмитьбю"]:
             is_valid_password = (False, "The password must contain at least one Latin character")
