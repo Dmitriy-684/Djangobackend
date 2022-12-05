@@ -11,6 +11,41 @@ from django.db.utils import IntegrityError
 from .ipfs import ipfs_api
 import base64
 
+
+def post_nft(request):
+    from random import randint
+    url = "http://127.0.0.1:8000/load-nft/"
+    num = randint(0, 99999999)
+    personAddress = str(Person.objects.all()[randint(0, len(Person.objects.all())-1)].UserAddress)
+    data = {"NFTHash": f"randomhash-number-{num}",
+            "UserAddress": personAddress,
+            "Name": f"sample-{num}",
+            "Cost": f"{randint(1, 10000)}"}
+    res = requests.post(url, json=data)
+    if res.status_code == 200:
+        return HttpResponse(f"NFT successfully loaded {data}")
+    else:
+        return HttpResponse("Something went wrong!")
+
+@csrf_exempt
+def load_nft(request):
+    if request.method == "POST":
+        nft = Nft()
+        body = request.body.decode('utf-8')
+        body = json.loads(body)
+        nft.NFTHash = body["NFTHash"]
+        nft.NFTOwner = Person.objects.get(UserAddress=body["UserAddress"])
+        nft.NFTName = body["Name"]
+        nft.NFTCost = body["Cost"]
+        try:
+            nft.save()
+            return HttpResponse("NFT successfully loaded")
+        except IntegrityError:
+            return HttpResponse(status=500, reason="This image already exists")
+    elif request.method == "GET":
+        return HttpResponse(status=500, reason="Only for post request")
+
+
 @csrf_exempt
 def load_image(request):
     if request.method == "POST":
@@ -138,7 +173,7 @@ def get_person_by_address(request, address):
 def get_nfts_by_user_address(request, address):
     try:
         nfts = [nft for nft in Nft.objects.all() if nft.NFTOwner.UserAddress == address]
-        data = {f"{nfts[0].NFTOwner.UserAddress}": tuple(dumps(nft, cls=NFTEncoder) for nft in nfts)}
+        data = tuple(dumps(nft, cls=NFTEncoder) for nft in nfts)
         return HttpResponse(f"{data}")
     except IndexError:
         return HttpResponse(status=500, reason="This user doesn't have any NFTs")

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7a79fb79-0b70-4735-9fa3-4c53d8828e17" name="Changes" comment="">
+    <list default="true" id="7a79fb79-0b70-4735-9fa3-4c53d8828e17" name="Changes" comment="json to ipfs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFT/API/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFT/API/ipfs.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/ipfs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NFT/API/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NFT/API/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFT/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFT/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/db.sqlite3" afterDir="false" />
     </list>
@@ -59,6 +57,14 @@
       <option name="presentableId" value="Default" />
       <updated>1668604063220</updated>
     </task>
+    <task id="LOCAL-00001" summary="json to ipfs">
+      <created>1670019153163</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1670019153163</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -71,5 +77,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="json to ipfs" />
+    <option name="LAST_COMMIT_MESSAGE" value="json to ipfs" />
   </component>
 </project>

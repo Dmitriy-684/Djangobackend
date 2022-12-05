@@ -27,5 +27,9 @@ urlpatterns = [
     path('get-all-persons/', views.get_person_all),
     # update person data
     # path('update/<str:address>', views.update_person_data),
+    # post nft data to test load-nft
+    path("post-nft/", views.post_nft),
+    # load nft to database
+    path("load-nft/", views.load_nft),
 
 ]
