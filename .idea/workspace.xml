@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="7a79fb79-0b70-4735-9fa3-4c53d8828e17" name="Changes" comment="json to ipfs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NFT/API/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFT/API/encoders.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/encoders.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFT/API/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NFT/API/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/API/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NFT/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/NFT/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

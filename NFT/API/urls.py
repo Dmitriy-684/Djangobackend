@@ -16,9 +16,9 @@ urlpatterns = [
     # test for load image
     path("post-image/", views.post_image),
     # test for registration
-    path('reg-user', views.post_for_registration),
+    path('reg-user/', views.post_for_registration),
     # test for authorize
-    path('auth-user', views.post_for_authorization),
+    path('auth-user/', views.post_for_authorization),
     # get person by address
     path('get-user/<str:address>', views.get_person_by_address),
     # get all nfts by user address
@@ -33,4 +33,10 @@ urlpatterns = [
     path("load-nft/", views.load_nft),
     # get all nfts
     path("get-nfts-all/", views.get_nfts_all),
+    # get all history,
+    path("get-history/", views.get_history),
+    # write trans to history
+    path("write-history/", views.write_history),
+    # test history
+    path("post-history/", views.post_history)
 ]

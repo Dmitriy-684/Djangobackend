@@ -4,23 +4,59 @@ import hashlib
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
 from .models import Person, Nft, History
 from json import dumps
-from .encoders import PersonEncoder, NFTEncoder, NFTAllEncoder
+from .encoders import PersonEncoder, NFTEncoder, NFTAllEncoder, HistoryEncoder
 from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
 from django.db.utils import IntegrityError
 from .ipfs import ipfs_api
 import base64
+from random import randint
+
+
+def post_history(request):
+    url = "http://127.0.0.1:8000/write-history/"
+    addressFrom = Person.objects.all()[randint(0, len(Person.objects.all()) - 1)].UserAddress
+    addressTo = Person.objects.all()[randint(0, len(Person.objects.all()) - 1)].UserAddress
+    NFTHash = Nft.objects.all()[randint(0, len(Nft.objects.all())-1)].NFTHash
+    while addressFrom == addressTo:
+        addressTo = Person.objects.all()[randint(0, len(Person.objects.all()) - 1)].UserAddress
+    data = {"UserAddressFrom": addressFrom,
+            "UserAddressTo": addressTo,
+            "NFTHash": NFTHash
+            }
+    res = requests.post(url, json=data)
+    if res.status_code == 200:
+        return HttpResponse(f"Successfully {data}")
+    else:
+        return HttpResponse("Something went wrong!")
+
+
+@csrf_exempt
+def write_history(request):
+    if request.method == "POST":
+        history = History()
+        body = request.body.decode('utf-8')
+        body = json.loads(body)
+        history.UserAddressFrom = Person.objects.get(UserAddress=body["UserAddressFrom"])
+        history.UserAddressTo = Person.objects.get(UserAddress=body["UserAddressTo"])
+        history.NFTInfo = Nft.objects.get(NFTHash=body["NFTHash"])
+        try:
+            history.save()
+            return HttpResponse("History successfully written!")
+        except Exception as e:
+            return HttpResponse(status=500, reason=e)
+    elif request.method == "GET":
+        return HttpResponse(status=500, reason="Only for post request")
 
 
 def post_nft(request):
-    from random import randint
     url = "http://127.0.0.1:8000/load-nft/"
     num = randint(0, 99999999)
     personAddress = str(Person.objects.all()[randint(0, len(Person.objects.all())-1)].UserAddress)
     data = {"NFTHash": f"randomhash-number-{num}",
             "UserAddress": personAddress,
-            "Name": f"sample-{num}",
-            "Cost": f"{randint(1, 10000)}"}
+            "NFTName": f"sample-{num}",
+            "NFTCost": f"{randint(1, 10000)}"}
     res = requests.post(url, json=data)
     if res.status_code == 200:
         return HttpResponse(f"NFT successfully loaded {data}")
@@ -35,8 +71,8 @@ def load_nft(request):
         body = json.loads(body)
         nft.NFTHash = body["NFTHash"]
         nft.NFTOwner = Person.objects.get(UserAddress=body["UserAddress"])
-        nft.NFTName = body["Name"]
-        nft.NFTCost = body["Cost"]
+        nft.NFTName = body["NFTName"]
+        nft.NFTCost = body["NFTCost"]
         try:
             nft.save()
             return HttpResponse("NFT successfully loaded")
@@ -185,6 +221,14 @@ def get_nfts_all(request):
         return HttpResponse(f"{data}")
     else:
         return HttpResponse(status=500, reason="This user doesn't have any NFTs")
+
+
+def get_history(request):
+    data = tuple(dumps(op, cls=HistoryEncoder) for op in History.objects.all())
+    if data:
+        return HttpResponse(f"{data}")
+    else:
+        return HttpResponse(status=500, reason="The history is empty")
 
 
 def main_page(request):

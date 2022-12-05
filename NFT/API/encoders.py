@@ -25,10 +25,14 @@ class NFTAllEncoder(json.JSONEncoder):
                 "NFTCost": obj.NFTCost,
                 }
 
-class History(json.JSONEncoder):
+
+class HistoryEncoder(json.JSONEncoder):
     def default(self, obj):
-        return {"Id": obj.id,
-                "UserAdressFrom": obj.UserAddressFrom,
-                "UserAddressTo": obj.UserAddressTo,
-                "TransferNFTHash": obj.TransferNFTHash}
+        return {
+            "UserFrom": obj.UserAddressFrom.UserAddress,
+            "UserTo": obj.UserAddressTo.UserAddress,
+            "NFTName": obj.NFTInfo.NFTName,
+            "NFTCost": obj.NFTInfo.NFTCost,
+        }
+
 
