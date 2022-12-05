@@ -4,7 +4,7 @@ import hashlib
 from django.http import HttpResponseRedirect, HttpResponseNotFound, HttpResponse
 from .models import Person, Nft, History
 from json import dumps
-from .encoders import PersonEncoder, NFTEncoder
+from .encoders import PersonEncoder, NFTEncoder, NFTAllEncoder
 from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
 from django.db.utils import IntegrityError
@@ -176,6 +176,14 @@ def get_nfts_by_user_address(request, address):
         data = tuple(dumps(nft, cls=NFTEncoder) for nft in nfts)
         return HttpResponse(f"{data}")
     except IndexError:
+        return HttpResponse(status=500, reason="This user doesn't have any NFTs")
+
+
+def get_nfts_all(request):
+    data = tuple(dumps(nft, cls=NFTAllEncoder) for nft in Nft.objects.all())
+    if data:
+        return HttpResponse(f"{data}")
+    else:
         return HttpResponse(status=500, reason="This user doesn't have any NFTs")
 
 

@@ -31,5 +31,6 @@ urlpatterns = [
     path("post-nft/", views.post_nft),
     # load nft to database
     path("load-nft/", views.load_nft),
-
+    # get all nfts
+    path("get-nfts-all/", views.get_nfts_all),
 ]
