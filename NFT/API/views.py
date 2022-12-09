@@ -94,11 +94,9 @@ def load_image(request):
     if request.method == "POST":
         body = request.body.decode('utf-8')
         body = json.loads(body)
-        ipfs_hash = ipfs_api(body["ipfsHash"], "bytes")
-        body["ipfsHash"] = ipfs_hash
-        json_hash = ipfs_api(str(body), "json")
+        json_hash = ipfs_api(body["Bytes"], body["UserAddress"], body["NFTName"], body["NFTCost"])
         print(json_hash)
-        if ipfs_hash == "None":
+        if json_hash == "None":
             return HttpResponse(status=500, reason="Failed to load image")
         else:
             return HttpResponse(f"{json_hash}")
@@ -110,7 +108,7 @@ def post_image(request):
     url = "http://127.0.0.1:8000/load-image/"
     file = open("API/files/forest.jpg", "rb")
     file = file.read()
-    res = requests.post(url, json={"ipfsHash": f"{base64.b64encode(file)}",
+    res = requests.post(url, json={"Bytes": f"{base64.b64encode(file)}",
                                    "UserAddress": "kdgefglfghlfdglsfglsfg423423fb",
                                    "NFTName": "Sample",
                                    "NFTCost": "500"})
