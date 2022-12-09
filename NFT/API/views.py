@@ -94,8 +94,8 @@ def load_image(request):
     if request.method == "POST":
         body = request.body.decode('utf-8')
         body = json.loads(body)
-        ipfs_hash = ipfs_api(body["Bytes"], "bytes")
-        body["Bytes"] = ipfs_hash
+        ipfs_hash = ipfs_api(body["ipfsHash"], "bytes")
+        body["ipfsHash"] = ipfs_hash
         json_hash = ipfs_api(str(body), "json")
         print(json_hash)
         if ipfs_hash == "None":
@@ -110,7 +110,10 @@ def post_image(request):
     url = "http://127.0.0.1:8000/load-image/"
     file = open("API/files/forest.jpg", "rb")
     file = file.read()
-    res = requests.post(url, json={"Bytes": f"{base64.b64encode(file)}"})
+    res = requests.post(url, json={"ipfsHash": f"{base64.b64encode(file)}",
+                                   "UserAddress": "kdgefglfghlfdglsfglsfg423423fb",
+                                   "NFTName": "Sample",
+                                   "NFTCost": "500"})
     if res.status_code == 200:
         return HttpResponse("<h4>Данные отправлены<h4>")
     else:
