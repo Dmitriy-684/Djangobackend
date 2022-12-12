@@ -8,9 +8,25 @@ from .encoders import PersonEncoder, NFTEncoder, NFTAllEncoder, HistoryEncoder
 from django.views.decorators.csrf import csrf_exempt
 from .validations import validate
 from django.db.utils import IntegrityError
-from .ipfs import ipfs_api
+from .ipfs import ipfs_get_json, ipfs_load_json
 import base64
 from random import randint
+
+
+def get_json_from_ipfs(request):
+    if request.method == "POST":
+        try:
+            body = request.body.decode('utf-8')
+            body = json.loads(body)
+            json_file = ipfs_get_json(body["Hash"])
+            print(json_file)
+            if json_file == "None":
+                return HttpResponse(status=200, reason="Something with IPFS went wrong")
+            return HttpResponse(f"{json_file}")
+        except Exception as e:
+            return HttpResponse(status=200, reason=e)
+    elif request.method == "GET":
+        return HttpResponse(status=500, reason="Only for post request")
 
 
 def post_history(request):
@@ -94,7 +110,7 @@ def load_image(request):
     if request.method == "POST":
         body = request.body.decode('utf-8')
         body = json.loads(body)
-        json_hash = ipfs_api(body["Bytes"], body["UserAddress"], body["NFTName"], body["NFTCost"])
+        json_hash = ipfs_load_json(str(body["Bytes"]), body["UserAddress"], body["NFTName"], body["NFTCost"])
         print(json_hash)
         if json_hash == "None":
             return HttpResponse(status=500, reason="Failed to load image")

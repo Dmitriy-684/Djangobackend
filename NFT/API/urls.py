@@ -38,5 +38,7 @@ urlpatterns = [
     # write trans to history
     path("write-history/", views.write_history),
     # test history
-    path("post-history/", views.post_history)
+    path("post-history/", views.post_history),
+    # get json_file from ipfs
+    path("get-json-file", views.get_json_from_ipfs)
 ]
